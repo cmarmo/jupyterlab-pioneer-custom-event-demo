@@ -5,6 +5,7 @@ import {
 import { NotebookPanel, INotebookTracker } from '@jupyterlab/notebook';
 import { Widget } from '@lumino/widgets';
 import { IJupyterLabPioneer } from 'jupyterlab-pioneer';
+import { Exporter } from 'jupyterlab-pioneer/lib/types';
 
 const PLUGIN_ID = 'jupyterlab-pioneer-custom-event-demo:plugin';
 
@@ -45,7 +46,14 @@ const plugin: JupyterFrontEndPlugin<void> = {
             eventTime: Date.now()
           };
 
-          await pioneer.publishEvent(notebookPanel, event, { type: 'console_exporter' } , false );
+          const exporter_type: Exporter = {
+            type: 'file_exporter',
+            args: {
+              path: 'log',
+              id: ''
+            }
+          }
+          await pioneer.publishEvent(notebookPanel, event, exporter_type , false );
           // publishEvent could be called whenever we want to publish the event and export telemetry data to the desired endpoints. The publishEvent method takes two arguments, eventDetail: Object and logNotebookContent: Boolean.
 
           window.alert('Telemetry data sent');
